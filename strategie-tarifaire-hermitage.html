@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="fr" data-lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stratégie tarifaire · L'Hermitage · Eukleia (interne)</title>
+<meta name="theme-color" content="#1B2B4B">
+<meta property="og:title" content="Stratégie tarifaire — L'Hermitage">
+<meta property="og:description" content="Étude de marché et projection de revenus locatifs — document interne Eukleia">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/4.7.1/maplibre-gl.min.css" rel="stylesheet">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/4.7.1/maplibre-gl.min.js"></script>
+<style>
+:root{
+  --navy:#1B2B4B; --gold:#B8975A; --gold-soft:#D6C3A0;
+  --ivory:#F6F4EE; --paper:#FFFDF9; --ink:#232C3F; --muted:#6E7686; --rule:#E6E0D3;
+  --serif:'Cormorant Garamond',Georgia,serif; --sans:'Manrope','Segoe UI',Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ivory);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{max-width:960px;margin:0 auto;padding:0 20px}
+h1,h2,h3{font-family:var(--serif);font-weight:400;letter-spacing:.01em}
+.eyebrow{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-weight:600}
+.tag{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700}
+.muted{color:var(--muted)}
+.btn{display:inline-block;background:var(--gold);color:#fff;text-decoration:none;font-weight:700;font-size:14px;letter-spacing:.06em;padding:15px 30px;border-radius:999px;border:0;cursor:pointer}
+
+/* ——— Héro (bloc nuit) ——— */
+.hero{position:relative;min-height:76vh;display:flex;flex-direction:column;justify-content:flex-end;
+  background:radial-gradient(120% 90% at 20% 10%,#2A4066 0%,#1B2B4B 45%,#0E1829 100%);color:#fff;overflow:hidden}
+.hero-photo{position:absolute;inset:0;background-size:cover;background-position:center 45%;opacity:.92;
+  }
+.brandmark{position:absolute;top:20px;left:20px;z-index:5;font-family:"Cormorant Garamond",serif;font-size:20px;letter-spacing:.32em;color:#fff;opacity:.92}
+.hero::after{content:"";position:absolute;inset:0;background:
+  linear-gradient(180deg,rgba(11,20,35,.42) 0%,rgba(11,20,35,.18) 34%,rgba(11,20,35,.74) 72%,rgba(11,20,35,.95) 100%);pointer-events:none}
+.hero .wrap{position:relative;z-index:2;padding-top:84px;padding-bottom:46px}
+.hero .eyebrow{color:var(--gold-soft)}
+.hero h1{font-size:clamp(36px,6vw,58px);line-height:1.08;margin:14px 0 10px;font-weight:400}
+.hero h1 em{font-style:italic;color:var(--gold-soft)}
+.hero .sub{color:#C9CFDD;max-width:640px;font-size:15.5px}
+.hero .meta{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:26px;padding-top:18px;border-top:1px solid rgba(214,195,160,.28);
+  font-size:12.5px;letter-spacing:.05em;color:#AEB6C8}
+.hero .meta b{color:#fff;font-weight:600}
+
+/* ——— Navigation onglets ——— */
+.tabs{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.94);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--rule)}
+.tabs .wrap{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.tabs .wrap::-webkit-scrollbar{display:none}
+.tab{appearance:none;background:none;border:0;cursor:pointer;font-family:var(--sans);font-weight:600;
+  font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+  padding:17px 14px 15px;border-bottom:2px solid transparent;white-space:nowrap}
+.tab:hover{color:var(--ink)}
+.tab.on{color:var(--navy);border-bottom-color:var(--gold)}
+.tab:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
+
+/* ——— Sections ——— */
+.panel{display:none;padding:58px 0 30px}
+.panel.on{display:block}
+.sec{margin-bottom:58px}
+.sec h2{font-size:clamp(26px,3.6vw,34px);margin:10px 0 8px}
+.sec .lede{max-width:660px;color:var(--muted);font-size:15.5px}
+.hr{border:0;border-top:1px solid var(--rule);margin:34px 0}
+
+/* ——— Cartes & stats ——— */
+.grid{display:grid;gap:14px}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g2{grid-template-columns:repeat(2,1fr)}
+.stat{background:var(--paper);border:1px solid var(--rule);border-radius:14px;padding:18px 18px 15px}
+.stat .n{font-family:var(--serif);font-size:34px;line-height:1.1;color:var(--navy)}
+.stat .n small{font-size:18px;color:var(--muted)}
+.stat .l{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:4px;font-weight:600}
+.note{background:var(--paper);border:1px solid var(--rule);border-left:3px solid var(--gold);border-radius:0 12px 12px 0;
+  padding:14px 16px;font-size:14px;color:var(--ink)}
+.note b{color:var(--navy)}
+
+/* ——— Tableaux ——— */
+.tblwrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px;background:var(--paper);border:1px solid var(--rule);border-radius:14px;overflow:hidden}
+th{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;text-align:left;
+  padding:12px 14px;border-bottom:1px solid var(--rule);background:#FBF9F3}
+td{padding:11px 14px;border-bottom:1px solid var(--rule);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+tr.hl td{background:#FAF6EC}
+tfoot td{font-weight:700;color:var(--navy);background:#FBF9F3}
+
+/* ——— Graphiques ——— */
+.chart{background:var(--paper);border:1px solid var(--rule);border-radius:14px;padding:18px}
+.chart h3{font-size:20px;margin-bottom:2px}
+.chart .cap{font-size:12.5px;color:var(--muted);margin-bottom:12px}
+.legend{display:flex;flex-wrap:wrap;gap:16px;font-size:12px;color:var(--muted);margin-top:10px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+svg text{font-family:var(--sans)}
+
+/* ——— Bloc nuit (réutilisé) ——— */
+.night{background:var(--navy);color:#fff;border-radius:18px;padding:30px 28px;position:relative;overflow:hidden}
+.night::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background:radial-gradient(70% 60% at 85% 0%, rgba(214,195,160,.28) 0%, rgba(214,195,160,0) 60%)}
+.night h3{color:#fff;font-size:24px}
+.night .eyebrow{color:var(--gold-soft)}
+.night p{color:#C9CFDD;font-size:14.5px}
+.night .big{font-family:var(--serif);font-size:44px;color:#fff;line-height:1.05}
+.night .big small{font-size:20px;color:var(--gold-soft)}
+
+/* ——— Scénarios ——— */
+.scn{background:var(--paper);border:1px solid var(--rule);border-radius:16px;padding:22px;position:relative}
+.scn.mid{border-color:var(--gold);box-shadow:0 10px 30px rgba(184,151,90,.12)}
+.scn.cur{outline:2px solid var(--gold-soft);outline-offset:2px}
+.scn .badge{position:absolute;top:-11px;left:20px;background:var(--gold);color:#fff;font-size:10.5px;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;padding:4px 12px;border-radius:999px}
+.scn h3{font-size:22px;color:var(--navy)}
+.scn .ca{font-family:var(--serif);font-size:38px;color:var(--navy);margin:8px 0 2px}
+.scn .ca small{font-size:18px;color:var(--muted)}
+.scn ul{list-style:none;margin-top:12px;font-size:13.5px;color:var(--muted)}
+.scn li{padding:7px 0;border-top:1px solid var(--rule);display:flex;justify-content:space-between;gap:10px}
+.scn li b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+
+/* ——— Commission ——— */
+.sim{background:var(--paper);border:1px solid var(--rule);border-radius:16px;padding:22px}
+.sim .row{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.field input{font-family:var(--sans);font-size:15px;padding:10px 12px;border:1px solid var(--rule);border-radius:10px;background:#fff;color:var(--ink);width:130px}
+.field select{font-family:var(--sans);font-size:14px;padding:10px 12px;border:1px solid var(--rule);border-radius:10px;background:#fff;color:var(--ink);min-width:250px}
+.field input:focus,.field select:focus{outline:2px solid var(--gold-soft)}
+.pal{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0 6px}
+.pill{border:1px solid var(--rule);border-radius:999px;padding:8px 16px;font-size:13px;background:#fff}
+.pill b{color:var(--navy)}
+
+/* ——— Carte 3D ——— */
+.mapbox{background:var(--paper);border:1px solid var(--rule);border-radius:16px;overflow:hidden}
+#map3d{width:100%;height:440px;background:#F3EEE3}
+#maperr{display:none;padding:40px 20px;text-align:center;color:var(--muted);font-size:14px}
+.mapfoot{display:flex;flex-wrap:wrap;gap:6px 18px;padding:14px 18px;border-top:1px solid var(--rule);font-size:12.5px;color:var(--muted)}
+.mapfoot b{color:var(--ink);font-weight:600}
+.mk{width:13px;height:13px;border-radius:50%;background:#1B2B4B;border:2px solid #F7F4EF;box-shadow:0 1px 5px rgba(0,0,0,.35);cursor:pointer}
+.mk.me{width:22px;height:22px;background:#B8975A;border:3px solid #fff}
+.maplibregl-popup-content{font-family:var(--sans);font-size:12.5px;color:#232C3F;border-radius:10px;padding:10px 12px}
+.maplibregl-popup-content b{color:#1B2B4B}
+
+/* ——— Divers ——— */
+.src{font-size:12.5px;color:var(--muted)}
+.src li{margin:6px 0 6px 16px}
+.foot{border-top:1px solid var(--rule);margin-top:40px;padding:30px 0 46px;font-size:13px;color:var(--muted)}
+.foot .sig{font-family:var(--serif);font-size:22px;color:var(--navy);letter-spacing:.06em}
+.toplink{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);text-decoration:none;font-weight:700}
+
+@media (max-width:760px){
+  .g3,.g2{grid-template-columns:1fr}
+  .hero{min-height:60vh}
+  .panel{padding-top:40px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* ——— Icônes au trait (or) ——— */
+.ic{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;vertical-align:-3px;margin-right:8px;flex:none}
+h2 .ic{width:26px;height:26px;vertical-align:-4px;margin-right:12px}
+h3 .ic{width:20px;height:20px;vertical-align:-3px}
+.stat .ic{width:22px;height:22px;display:block;margin:0 0 10px}
+.scn li span{display:inline-flex;align-items:center}
+.scn li .ic{width:15px;height:15px;margin-right:7px}
+.pill .ic{width:14px;height:14px;margin-right:6px;vertical-align:-2px}
+.mapfoot .ic{width:14px;height:14px;margin-right:4px}
+td .ic{width:16px;height:16px}
+td.num,th.num{white-space:nowrap}
+.mk.major{width:24px;height:24px;background:#1B2B4B;border:2px solid #F7F4EF;display:flex;align-items:center;justify-content:center}
+.mk.major .ic{width:14px;height:14px;margin:0;stroke:#B8975A;stroke-width:2}
+input[type=range]{width:100%;accent-color:#B8975A;margin:6px 0 2px}
+.field label b{color:var(--navy);font-size:13px;letter-spacing:0;text-transform:none;margin-left:6px}
+
+.hero{min-height:38vh}
+.kv{display:grid;grid-template-columns:1fr 1fr;gap:10px 22px;font-size:14px}
+.kv div{padding:8px 0;border-bottom:1px solid var(--rule)}
+.kv b{color:var(--navy)}
+.tbc{font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:999px;border:1px solid var(--rule);font-weight:700}
+.ok{color:#2E6B3F;border-color:#BFD8C4;background:#EEF6F0}.warn{color:#8A5A12;border-color:#E6CFA3;background:#FBF3E3}.todo{color:var(--navy);border-color:#C9D0E0;background:#EEF1F8}
+@media (max-width:760px){.kv{grid-template-columns:1fr}}
+
+.sel{outline:2px solid var(--gold);outline-offset:-2px;background:#FBF6EA}
+th.sel{color:var(--navy)}
+.chip{display:inline-block;background:var(--gold);color:#fff;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:3px 9px;border-radius:999px;margin-left:6px;vertical-align:2px}
+.tl td:first-child{white-space:nowrap;font-weight:600;color:var(--navy)}
+</style>
+</head>
+<body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6-5.3-6-11a6 6 0 0 1 12 0c0 5.7-6 11-6 11z"/><circle cx="12" cy="10" r="2.2"/></symbol>
+<symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+<symbol id="i-bed" viewBox="0 0 24 24"><path d="M3 18V8M3 13h18v5M21 18v-5a2 2 0 0 0-2-2h-7v2"/><circle cx="7" cy="9.5" r="1.6"/></symbol>
+<symbol id="i-euro" viewBox="0 0 24 24"><path d="M17 6.5A6 6 0 0 0 7.5 9M17 17.5A6 6 0 0 1 7.5 15M5 11h8M5 13h8"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24"><path d="M5 20v-9M11 20V5M17 20v-7M2 20h20"/></symbol>
+<symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="12" r="3.5"/><path d="M11.5 12H21M18 12v3M15 12v2"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+<symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7M5 10v10h14V10M10 20v-6h4v6"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0M16 4.5a3 3 0 0 1 0 6M21 20a6 6 0 0 0-4-5.7"/></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></symbol>
+<symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></symbol>
+<symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3h9l5 5v13H6zM15 3v5h5M9 13h6M9 17h6"/></symbol>
+<symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+<symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></symbol>
+<symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8zM19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z"/></symbol>
+<symbol id="i-trend" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8M15 7h6v6"/></symbol>
+<symbol id="i-pct" viewBox="0 0 24 24"><circle cx="7" cy="7" r="2.2"/><circle cx="17" cy="17" r="2.2"/><path d="M5 19L19 5"/></symbol>
+<symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4M5 4h13l-2.5 4L18 12H5"/></symbol>
+<symbol id="i-hand" viewBox="0 0 24 24"><path d="M4 12l4-4 4 4M8 8v9a4 4 0 0 0 4 4h2a4 4 0 0 0 4-4v-5a2 2 0 0 0-4 0v-2a2 2 0 0 0-4 0"/></symbol>
+<symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 3v18M4 7h16M6 7l-3 7a3 3 0 0 0 6 0zM18 7l-3 7a3 3 0 0 0 6 0z"/></symbol>
+<symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5zM3 13l9 5 9-5M3 17l9 5 9-5"/></symbol>
+</defs></svg>
+<header class="hero" style="min-height:40vh">
+  <div class="brandmark">EUKLEIA</div>
+  <div class="wrap">
+    <div class="eyebrow">Document interne · ne pas diffuser</div>
+    <h1>Stratégie tarifaire<br><em>L'Hermitage</em></h1>
+    <p class="sub">69 rue Albert Fracasse, Deauville — 5 chambres, 10 voyageurs. Moteur : PriceLabs (Airbnb + Booking, mêmes prix).
+      Version 2 du 29 septembre 2026 — posture de lancement retenue : <b style="color:#fff">modéré + coup de pouce</b>.</p>
+    <div class="meta"><span>Propriétaire <b>M. Richard Salabi (SCI)</b></span><span>Mise en ligne <b>5 octobre 2026</b></span><span>Projection de référence <b>v3 — central 70,0 k€</b></span></div>
+  </div>
+</header>
+<main class="wrap">
+<section class="panel on">
+
+  <div class="sec">
+    <div class="eyebrow">01 · La situation</div>
+    <h2><svg class="ic"><use href="#i-flag"/></svg>Un lancement en plein 4<sup>e</sup> trimestre</h2>
+    <p class="lede">On ouvre le 5 octobre, sans avis, dans le trimestre le plus faible de l'année, sur un marché qui se remplit moins vite
+      que l'an dernier (5 ch. : 13,6 % d'octobre réservé fin septembre contre 19,3 % un an plus tôt). Le Q4 vaut
+      <b>22 à 38 nuits et 8 à 23 k€</b> selon le scénario (central : 31 nuits, 14 784 €, dont
+      7 611 € en décembre). Ce n'est pas un trimestre de revenu : <b>c'est un trimestre d'amorçage</b>.</p>
+    <div class="grid g3">
+      <div class="stat"><svg class="ic"><use href="#i-star"/></svg><div class="n">3 avis</div><div class="l">publiés avant le 20 décembre</div></div>
+      <div class="stat"><svg class="ic"><use href="#i-euro"/></svg><div class="n">≥ 400 €</div><div class="l">tarif réalisé sur le trimestre, réveillons inclus (≥ 360 € en oct.-nov., médian 4 ch. : 386 €)</div></div>
+      <div class="stat"><svg class="ic"><use href="#i-moon"/></svg><div class="n">≥ 650 €</div><div class="l">réveillons vendus au prix PriceLabs (647–962 €), 3 nuits minimum</div></div>
+    </div>
+    <div class="note" style="margin-top:14px"><b>Ce qu'on protège.</b> Le positionnement en semaine et sur les pointes, et les réveillons (23 déc. → 1<sup>er</sup> janv.),
+      seul actif du trimestre. <b>Ce qu'on concède.</b> Dix pour cent sur les week-ends d'octobre-novembre, le temps de décrocher trois avis.
+      <b>Ce qu'on refuse.</b> Toute remise ou promotion native Airbnb / Booking : PriceLabs seul, pour garder une lecture propre des prix.</div>
+  </div>
+
+  <div class="sec">
+    <div class="eyebrow">02 · La posture</div>
+    <h2><svg class="ic"><use href="#i-layers"/></svg>Quatre postures possibles, une retenue</h2>
+    <div class="tblwrap"><table><thead><tr><th></th><th class=''>Conservateur</th><th class=''>Modéré</th><th class='sel'>Modéré + coup de pouce<span class=chip>retenu</span></th><th class=''>Agressif</th></tr></thead><tbody><tr><td><b>Idée</b></td><td class=''>Remplir vite, accumuler les avis, accepter un tarif de 4 chambres ordinaire</td><td class=''>Tenir le positionnement partout, laisser le marché faire</td><td class='sel'>Tenir le positionnement en semaine et sur les pointes ; concéder −10 % sur les week-ends d’octobre-novembre pour décrocher trois avis avant les réveillons</td><td class=''>Vendre au prix cible dès le premier jour, quitte à ne pas louer en octobre</td></tr><tr><td><b>Base / plancher</b></td><td class=''>350 € / 280 €</td><td class=''>388 € / 300 €</td><td class='sel'>388 € / 300 €</td><td class=''>430 € / 350 €</td></tr><tr><td><b>Saisonnalité</b></td><td class=''>Recommended</td><td class=''>Moderately Aggressive</td><td class='sel'>Moderately Aggressive</td><td class=''>Aggressive</td></tr><tr><td><b>Réactivité à la demande</b></td><td class=''>Recommended</td><td class=''>Moderately Aggressive</td><td class='sel'>Moderately Aggressive</td><td class=''>Aggressive</td></tr><tr><td><b>Anticipation</b></td><td class=''>Balanced</td><td class=''>Aggressive (revue en janvier)</td><td class='sel'>Aggressive (revue en janvier)</td><td class=''>Aggressive</td></tr><tr><td><b>Dernière minute</b></td><td class=''>Aggressive</td><td class=''>Balanced (défaut)</td><td class='sel'>Balanced (défaut)</td><td class=''>None (aucune remise)</td></tr><tr><td><b>Week-ends d’oct.-nov.</b></td><td class=''>≈ 330–350 €</td><td class=''>366–389 € (PriceLabs)</td><td class='sel'>330–430 € (−10 % jusqu’au 3<sup>e</sup> avis, expiration le 7 nov.)</td><td class=''>≈ 450–500 €</td></tr><tr><td><b>Réveillons</b></td><td class=''>Protégés : 3 nuits min</td><td class=''>Protégés : 3 nuits min</td><td class='sel'>Protégés : 3 nuits min, 647–962 € conservés</td><td class=''>Protégés : 3 nuits min</td></tr><tr><td><b>Attendu Q4</b></td><td class=''>≈ 30 nuits · ≈ 360 € · ≈ 11 k€</td><td class=''>≈ 25 nuits · ≈ 450 € · ≈ 11–12 k€</td><td class='sel'>25–31 nuits · 420–470 € · 11–15 k€</td><td class=''>15–20 nuits · 500 €+ · 8–10 k€</td></tr><tr><td><b>Risque principal</b></td><td class=''>Ancre un prix bas dans les avis et dans l’algorithme</td><td class=''>Octobre peut rester vide, avis tardifs</td><td class='sel'>Faible : le coup de pouce est daté, borné et réversible</td><td class=''>Zéro avis en janvier, hiver invendable</td></tr></tbody></table></div>
+    <p class="src" style="margin-top:10px">Attendus Q4 : nuits vendues · tarif moyen réalisé · CA hébergement du 5 octobre au 31 décembre, à comparer au scénario central (31 nuits, 14 784 €) et au plancher (22 nuits, 8 188 €).</p>
+  </div>
+
+  <div class="sec">
+    <div class="eyebrow">03 · Le plan de lancement</div>
+    <h2><svg class="ic"><use href="#i-bolt"/></svg>Le coup de pouce, précisément</h2>
+    <div class="grid g2">
+      <div class="chart">
+        <h3><svg class="ic"><use href="#i-euro"/></svg>Levier prix</h3>
+        <div class="cap">Surcharge datée PriceLabs, −10 % (type « percent »), nuits de vendredi et de samedi du 9 octobre au 7 novembre 2026 — le marathon (13–14 nov.) est exclu</div>
+        <div class="tblwrap"><table><thead><tr><th>Nuit</th><th class="num">PriceLabs au 29/09</th><th class="num">Avec coup de pouce</th></tr></thead><tbody><tr><td>ven. 09/10</td><td class='num'>391 €</td><td class='num'>352 €</td></tr><tr><td>sam. 10/10</td><td class='num'>392 €</td><td class='num'>353 €</td></tr><tr><td>ven. 16/10</td><td class='num'>304 €</td><td class='num'>274 €</td></tr><tr><td>sam. 17/10</td><td class='num'>328 €</td><td class='num'>295 €</td></tr><tr><td>ven. 23/10</td><td class='num'>385 €</td><td class='num'>346 €</td></tr><tr><td>sam. 24/10</td><td class='num'>376 €</td><td class='num'>338 €</td></tr><tr><td>ven. 30/10</td><td class='num'>475 €</td><td class='num'>428 €</td></tr><tr><td>sam. 31/10</td><td class='num'>460 €</td><td class='num'>414 €</td></tr><tr><td>ven. 06/11</td><td class='num'>340 €</td><td class='num'>306 €</td></tr><tr><td>sam. 07/11</td><td class='num'>354 €</td><td class='num'>319 €</td></tr></tbody></table></div>
+        <p class="src" style="margin-top:10px"><b>Retrait</b> : dès le 3<sup>e</sup> avis publié ; sinon expiration naturelle après la nuit du 7 novembre (le week-end du marathon n'est pas remisé). La remise s'ajoute à la dernière minute par défaut (−22 % le jour même → 0 à J-7) ; le plancher de 300 € borne l'ensemble.</p>
+      </div>
+      <div class="chart">
+        <h3><svg class="ic"><use href="#i-spark"/></svg>Leviers hors prix</h3>
+        <div class="tblwrap"><table><tbody>
+          <tr><td><svg class="ic"><use href="#i-clock"/></svg><b>Conversion</b></td><td>Réservation instantanée ON sur les deux canaux ; réponse sous l'heure ; calendrier ouvert 365 jours sans blocage</td></tr>
+          <tr><td><svg class="ic"><use href="#i-camera"/></svg><b>Annonce</b></td><td>Titre et première photo travaillés pour le Q4 (salle de cinéma, hyper-centre, tribu, réveillons) — étape 4</td></tr>
+          <tr><td><svg class="ic"><use href="#i-home"/></svg><b>Séjour</b></td><td>Accueil en personne, panier d'accueil, guide de séjour — l'expérience qui fait l'avis</td></tr>
+          <tr><td><svg class="ic"><use href="#i-star"/></svg><b>Avis</b></td><td>Message de départ à J+1 avec demande d'avis ; réponse publique à chaque avis dans les 24 h</td></tr>
+          <tr><td><svg class="ic"><use href="#i-globe"/></svg><b>Booking</b></td><td>Ouvert dès J0, mêmes prix ; plans dérivés à reprendre des autres annonces</td></tr>
+        </tbody></table></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="eyebrow">04 · L'échéancier</div>
+    <h2><svg class="ic"><use href="#i-cal"/></svg>Sept rendez-vous, une règle de décision à chacun</h2>
+    <div class="tblwrap"><table class="tl"><thead><tr><th>Date</th><th>Ce qu'on regarde</th><th>Règle de décision</th></tr></thead><tbody><tr><td>5 oct. — J0</td><td>Prix poussés sur Airbnb et Booking, annonce visible, réservation instantanée ON, coup de pouce posé</td><td>Go / no-go technique</td></tr><tr><td>12 oct. — J+7</td><td>Vues, favoris, premières demandes</td><td>Zéro contact → vérifier photos, titre, première photo, avant de toucher au prix</td></tr><tr><td>19 oct. — veille Toussaint</td><td>Réservations Toussaint et week-ends d’octobre</td><td>Aucun week-end vendu → passer au conservateur jusqu’au 30 nov. (base 350, dernière minute Aggressive)</td></tr><tr><td>2 nov. — fin Toussaint</td><td>Nombre d’avis, tarif réalisé vs médian 4 ch.</td><td>≥ 1 avis et tarif réalisé ≥ 360 € → on tient ; sinon conservateur jusqu’au 30 nov.</td></tr><tr><td>15 nov. — après marathon</td><td>Bilan du coup de pouce (expiré le 7 nov.) : avis publiés, week-ends de novembre, rythme de décembre</td><td>Décembre réservé < 20 % → dernière minute Aggressive sur les week-ends hors réveillons ; < 2 avis → prolonger le coup de pouce sur les 20–21 et 27–28 nov.</td></tr><tr><td>1<sup>er</sup> déc.</td><td>Réveillons vendus ?</td><td>Non vendus → maintien du prix jusqu’au 15 déc., puis −10 % maximum, jamais sous 600 €</td></tr><tr><td>5 janv. — bilan Q4</td><td>Nuits, tarif réalisé, avis, conversion (vues → réservations)</td><td>Fixe la posture Q1 ; ouvre le dossier été (anticipation, séjour minimum) ; décide des surcharges AMRAE</td></tr></tbody></table></div>
+    <div class="note" style="margin-top:14px"><b>Seuils d'alerte permanents.</b> Moins de 60 % des week-ends vendus à J-14 → baisser d'un cran saisonnalité ou demande.
+      Deux mois de suite sous le plancher → revue complète. Été 2027 réservé à moins de 30 % au 1<sup>er</sup> mars → anticipation en Balanced.</div>
+  </div>
+
+  <div class="sec">
+    <div class="eyebrow">05 · L'année</div>
+    <h2><svg class="ic"><use href="#i-sun"/></svg>Une posture par phase</h2>
+    <div class="tblwrap"><table><thead><tr><th>Phase</th><th>Posture</th><th>Objectif</th><th>Leviers</th><th>Revue</th></tr></thead><tbody><tr><td style='white-space:nowrap'><b>Lancement Q4</b><br><span class='muted'>5 oct. → 31 déc. 2026</span></td><td>Modéré + coup de pouce <span class=chip>retenu</span></td><td>Trois avis avant les réveillons ; positionnement validé ; réveillons vendus ≥ 650 €</td><td>Coup de pouce −10 % week-ends ; réveillons 3 nuits ; échéancier ci-dessus</td><td style='white-space:nowrap'>5 janv.</td></tr><tr><td style='white-space:nowrap'><b>Hiver</b><br><span class='muted'>janv. → mars 2027</span></td><td>Modéré — semaine laissée au plancher, AMRAE agressif</td><td>Vendre trois week-ends sur quatre ; AMRAE (3–5 févr.) à 500 €+ ; vacances d’hiver 4–7 nuits</td><td>Semaine au plancher (300 €) assumée + nuits orphelines ; surcharge AMRAE (nuits des 2–4 févr.) si PriceLabs reste sous 500 € à J-45 ; Pâques laissé à PriceLabs (813–843 €)</td><td style='white-space:nowrap'>5 janv. · 1<sup>er</sup> mars</td></tr><tr><td style='white-space:nowrap'><b>Printemps</b><br><span class='muted'>avril → juin 2027</span></td><td>Modéré · Pâques, ponts et triathlon agressifs</td><td>Occupation ≥ 45 % ; ponts vendus 3 nuits ; semaine à 20 %+</td><td>PriceLabs déjà à 900–1 144 € sur les ponts : surveiller, ne pas ajouter ; séjour min 3 sur les ponts</td><td style='white-space:nowrap'>1<sup>er</sup> mars · 15 avril</td></tr><tr><td style='white-space:nowrap'><b>Été</b><br><span class='muted'>juil. → août 2027</span></td><td>Agressif — rejugé le 5 janv. et le 1<sup>er</sup> mars</td><td>Occupation ≥ 70 % à 600 €+ ; Arqana 3–4 nuits à 900 €+</td><td>Anticipation Aggressive maintenue tant que le rythme ≥ N-1 ; sinon Balanced au 1<sup>er</sup> mars ; séjour min 4–5 à revoir pour Arqana</td><td style='white-space:nowrap'>5 janv. · 1<sup>er</sup> mars · 1<sup>er</sup> mai</td></tr><tr><td style='white-space:nowrap'><b>Rentrée & festival</b><br><span class='muted'>sept. 2027</span></td><td>Festival agressif · reste modéré</td><td>Festival 3 nuits à 650 €+ ; septembre ≥ 40 %</td><td>Surcharge festival dès publication des dates (PriceLabs aujourd’hui 437–699 €)</td><td style='white-space:nowrap'>1<sup>er</sup> juin · J-90</td></tr></tbody></table></div>
+  </div>
+
+  <div class="sec">
+    <div class="eyebrow">06 · La boîte à leviers</div>
+    <h2><svg class="ic"><use href="#i-key"/></svg>Changer de posture = une opération connue</h2>
+    <div class="tblwrap"><table>
+      <thead><tr><th>Réglage PriceLabs</th><th>Conservateur</th><th class="sel">Modéré (+ coup de pouce)<span class=chip>retenu</span></th><th>Agressif</th></tr></thead>
+      <tbody>
+        <tr><td>Prix de base / plancher / plafond</td><td>350 / 280 / —</td><td class="sel">388 / 300 / —</td><td>430 / 350 / —</td></tr>
+        <tr><td>Saisonnalité</td><td>Recommended</td><td class="sel">Moderately Aggressive</td><td>Aggressive</td></tr>
+        <tr><td>Réactivité à la demande</td><td>Recommended</td><td class="sel">Moderately Aggressive</td><td>Aggressive</td></tr>
+        <tr><td>Anticipation</td><td>Market Driven – Balanced</td><td class="sel">Aggressive (revue 5 janv.)</td><td>Aggressive</td></tr>
+        <tr><td>Dernière minute</td><td>Market Driven – Aggressive</td><td class="sel">Défaut (Balanced)</td><td>None</td></tr>
+        <tr><td>Jour de semaine</td><td>OFF</td><td class="sel">OFF</td><td>OFF</td></tr>
+        <tr><td>Séjour minimum</td><td>2 (été 3)</td><td class="sel">2 ; 3 réveillons, week-ends d'avril, Ascension ; 4–5 en été</td><td>3 (été 5)</td></tr>
+        <tr><td>Surcharges datées</td><td>—</td><td class="sel">Coup de pouce −10 % (voir 03) ; réveillons 3 nuits ; pointes à J-90</td><td>Pointes à J-90, prix mini +20 %</td></tr>
+      </tbody>
+    </table></div>
+    <p class="src" style="margin-top:10px">Toutes ces écritures passent par le connecteur PriceLabs (personnalisations, surcharges datées, base / plancher / plafond) et sont réversibles en une opération. Chaque changement est consigné au journal (11).</p>
+  </div>
+
+  <hr class="hr">
+  <div class="eyebrow" style="margin-bottom:24px">Annexes — les chiffres qui soutiennent la stratégie</div>
+
+  <div class="sec">
+    <div class="eyebrow">07 · Cibles</div>
+    <h2><svg class="ic"><use href="#i-star"/></svg>Positionnement et cibles annuelles</h2>
+    <div class="kv">
+      <div><b>Fourchette de positionnement</b><br>Entre le médian affiché des 4 ch. (≈ 386 €) et le 75<sup>e</sup> percentile des 5 ch. (≈ 775 €)</div>
+      <div><b>Tarif moyen réalisé cible (12 mois)</b><br>470 € (central) · plancher 380 € · plafond 600 €</div>
+      <div><b>Nuits vendues cibles</b><br>149 (central) · 102 · 180 — sur 365 jours ouverts</div>
+      <div><b>Structure du CA (central)</b><br>Week-ends 41 % · pointes 29 % · semaine 22 % · vacances 8 %</div>
+      <div><b>Doctrine</b><br>Marché de week-ends hors événements, ponts et vacances ; pointes tarifées « en risk manager » ; PriceLabs seul</div>
+      <div><b>Rampe de lancement (projection)</b><br>−30 % oct., −15 % nov., −5 % déc.</div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="eyebrow">08 · PriceLabs</div>
+    <h2><svg class="ic"><use href="#i-trend"/></svg>Réglages en vigueur (relevés le 29/09/2026, 19h45)</h2>
+    <div class="tblwrap"><table>
+      <thead><tr><th>Réglage</th><th>Valeur</th><th>Effet constaté</th><th>Statut</th></tr></thead>
+      <tbody>
+        <tr><td>Prix de base / plancher / plafond</td><td>388 € / 300 € / aucun</td><td>Semaine d'intersaison au plancher 17 nuits en nov. et en janv.</td><td><span class="tbc ok">validé</span></td></tr>
+        <tr><td>Saisonnalité</td><td>Moderately Aggressive</td><td>−20 % nov.-janv. / +130 % juil.-août vs base</td><td><span class="tbc ok">validé</span></td></tr>
+        <tr><td>Réactivité à la demande</td><td>Moderately Aggressive</td><td>Pâques, ponts, Arqana repérés et poussés (813–1 444 €)</td><td><span class="tbc ok">validé</span></td></tr>
+        <tr><td>Anticipation (far-out)</td><td>Aggressive : +20 % au-delà de 222 j, dès 60 j</td><td>Été 2027 à 900–1 050 € en semaine aujourd'hui ; retombe mécaniquement à J-60</td><td><span class="tbc warn">revue 5 janv.</span></td></tr>
+        <tr><td>Dernière minute</td><td>Bouton OFF → défaut Market Driven Balanced</td><td>−22 % le jour même, 0 à J-7</td><td><span class="tbc ok">validé</span></td></tr>
+        <tr><td>Jour de semaine</td><td>OFF</td><td>Le marché fournit +15 à +50 % le week-end en intersaison, ~0 en été</td><td><span class="tbc ok">validé</span></td></tr>
+        <tr><td>Profil saisonnier personnalisé</td><td>OFF</td><td>—</td><td><span class="tbc ok">validé</span></td></tr>
+        <tr><td>Surcharges datées</td><td>aucune au 29/09 (coup de pouce à poser)</td><td>Festival et AMRAE non repérés par PriceLabs (voir 10)</td><td><span class="tbc todo">à poser</span></td></tr>
+        <tr><td>Séjour minimum</td><td>2 nuits ; 3 sur quelques dates ; 4–5 en juillet-août</td><td>Format « semaine » en été</td><td><span class="tbc ok">validé</span></td></tr>
+        <tr><td>Synchronisation</td><td>ON (aucun prix poussé au 29/09 19h45)</td><td>Revue des prix à faire dans l'interface</td><td><span class="tbc todo">vérifier</span></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="sec">
+    <div class="eyebrow">09 · Contrôle</div>
+    <h2><svg class="ic"><use href="#i-scale"/></svg>PriceLabs face au modèle central, mois par mois</h2>
+    <p class="lede">Prix réalisés attendus dans le scénario central (nuits de semaine et de week-end) contre la moyenne des prix recommandés par PriceLabs au 29/09. Écart signalé au-delà de +25 % / −15 %.</p>
+    <div class="tblwrap"><table>
+      <thead><tr><th>Mois</th><th class="num">Semaine · modèle</th><th class="num">Semaine · PriceLabs</th><th class="num">Week-end · modèle</th><th class="num">Week-end · PriceLabs</th><th class="num">Plage PriceLabs</th></tr></thead>
+      <tbody><tr><td style='white-space:nowrap'>Oct. 2026</td><td class='num'>378 €</td><td class='num'>316 € <span class="tbc warn">-16 %</span></td><td class='num'>475 €</td><td class='num'>389 € <span class="tbc warn">-18 %</span></td><td class='num'>300–475 €</td></tr><tr><td style='white-space:nowrap'>Nov. 2026</td><td class='num'>329 €</td><td class='num'>308 € <span class="tbc ok">≈</span></td><td class='num'>421 €</td><td class='num'>366 € <span class="tbc ok">≈</span></td><td class='num'>300–522 €</td></tr><tr><td style='white-space:nowrap'>Déc. 2026</td><td class='num'>379 €</td><td class='num'>462 € <span class="tbc ok">≈</span></td><td class='num'>469 €</td><td class='num'>428 € <span class="tbc ok">≈</span></td><td class='num'>300–962 €</td></tr><tr><td style='white-space:nowrap'>Janv. 2027</td><td class='num'>332 €</td><td class='num'>309 € <span class="tbc ok">≈</span></td><td class='num'>425 €</td><td class='num'>462 € <span class="tbc ok">≈</span></td><td class='num'>300–956 €</td></tr><tr><td style='white-space:nowrap'>Févr. 2027</td><td class='num'>333 €</td><td class='num'>360 € <span class="tbc ok">≈</span></td><td class='num'>425 €</td><td class='num'>416 € <span class="tbc ok">≈</span></td><td class='num'>300–484 €</td></tr><tr><td style='white-space:nowrap'>Mars 2027</td><td class='num'>332 €</td><td class='num'>374 € <span class="tbc ok">≈</span></td><td class='num'>425 €</td><td class='num'>555 € <span class="tbc warn">+31 %</span></td><td class='num'>300–843 €</td></tr><tr><td style='white-space:nowrap'>Avril 2027</td><td class='num'>377 €</td><td class='num'>498 € <span class="tbc warn">+32 %</span></td><td class='num'>469 €</td><td class='num'>637 € <span class="tbc warn">+36 %</span></td><td class='num'>450–809 €</td></tr><tr><td style='white-space:nowrap'>Mai 2027</td><td class='num'>373 €</td><td class='num'>572 € <span class="tbc warn">+53 %</span></td><td class='num'>469 €</td><td class='num'>863 € <span class="tbc warn">+84 %</span></td><td class='num'>387–1144 €</td></tr><tr><td style='white-space:nowrap'>Juin 2027</td><td class='num'>372 €</td><td class='num'>592 € <span class="tbc warn">+59 %</span></td><td class='num'>473 €</td><td class='num'>859 € <span class="tbc warn">+81 %</span></td><td class='num'>446–941 €</td></tr><tr><td style='white-space:nowrap'>Juil. 2027</td><td class='num'>446 €</td><td class='num'>901 € <span class="tbc warn">+102 %</span></td><td class='num'>490 €</td><td class='num'>948 € <span class="tbc warn">+94 %</span></td><td class='num'>715–1172 €</td></tr><tr><td style='white-space:nowrap'>Août 2027</td><td class='num'>446 €</td><td class='num'>922 € <span class="tbc warn">+107 %</span></td><td class='num'>490 €</td><td class='num'>1 050 € <span class="tbc warn">+114 %</span></td><td class='num'>564–1444 €</td></tr><tr><td style='white-space:nowrap'>Sept. 2027</td><td class='num'>379 €</td><td class='num'>436 € <span class="tbc ok">≈</span></td><td class='num'>469 €</td><td class='num'>587 € <span class="tbc warn">+25 %</span></td><td class='num'>345–699 €</td></tr></tbody>
+    </table></div>
+    <div class="note" style="margin-top:14px"><b>Lecture.</b> Octobre-novembre et janvier : PriceLabs est sous le modèle (plancher en semaine, −18 % le week-end en octobre) — cohérent avec un lancement
+      sans avis. Mai à août : PriceLabs est très au-dessus du modèle (empilement saisonnalité × demande × anticipation) ; décision du 29/09 : laisser faire,
+      rejuger le 5 janvier puis le 1<sup>er</sup> mars. Septembre : le festival n'est pas repéré.</div>
+  </div>
+
+  <div class="sec">
+    <div class="eyebrow">10 · Pointes</div>
+    <h2><svg class="ic"><use href="#i-bolt"/></svg>Calendrier de veille 2026-2027</h2>
+    <p class="lede">Sources : calendrier scolaire officiel zone C (joursferies.fr), marathondeauville.fr, amrae-rencontres.fr. Les dates « estimées » sont à confirmer à leur publication ; règle : vérifier chaque fenêtre à J-90 et poser une surcharge si PriceLabs ne l'a pas repérée.</p>
+    <div class="tblwrap"><table>
+      <thead><tr><th>Fenêtre</th><th>Dates</th><th class="num">PriceLabs au 29/09</th><th>Action</th></tr></thead>
+      <tbody><tr><td><svg class='ic'><use href='#i-cal'/></svg><b>Toussaint (vacances)</b><br><span class='muted'>Familles ; semaine à travailler</span></td><td>17 oct. → 2 nov. 2026<br><span class='tbc ok'>officiel</span></td><td class='num'>303–475 €</td><td>Surveiller : si les semaines restent au plancher à J-30, ne rien forcer — c’est la demande réelle</td></tr><tr><td><svg class='ic'><use href='#i-flag'/></svg><b>Marathon inDeauville</b><br><span class='muted'>Nuits du 13 et 14 nov. ; groupes relais</span></td><td>dim. 15 nov. 2026<br><span class='tbc ok'>officiel</span></td><td class='num'>476–522 €</td><td>Recommandé : prix mini 550 € + 2 nuits (non appliqué — décision 29/09)</td></tr><tr><td><svg class='ic'><use href='#i-star'/></svg><b>Réveillons</b><br><span class='muted'>Tribus familiales, 3 nuits</span></td><td>23 déc. 2026 → 1er janv. 2027<br><span class='tbc ok'>calendrier</span></td><td class='num'>647–962 €</td><td>PriceLabs déjà à 647–962 € et 3 nuits min (sauf 27–29 déc.) : rien à faire</td></tr><tr><td><svg class='ic'><use href='#i-users'/></svg><b>Rencontres AMRAE au CID</b><br><span class='muted'>Risk managers, notes de frais, nuits du 2 au 4</span></td><td>3 → 5 févr. 2027<br><span class='tbc ok'>officiel</span></td><td class='num'>374–473 €</td><td>Recommandé : prix mini 500 € + 2 nuits (non appliqué — décision 29/09)</td></tr><tr><td><svg class='ic'><use href='#i-cal'/></svg><b>Vacances d’hiver zone C</b><br><span class='muted'>Séjours 4–7 nuits</span></td><td>6 → 22 févr. 2027<br><span class='tbc ok'>officiel</span></td><td class='num'>300–440 €</td><td>Surveiller le rythme à J-45</td></tr><tr><td><svg class='ic'><use href='#i-star'/></svg><b>Pâques</b><br><span class='muted'>Long week-end</span></td><td>26 → 28 mars 2027<br><span class='tbc ok'>calendrier</span></td><td class='num'>813–843 €</td><td>PriceLabs déjà à 813–843 € : rien à faire</td></tr><tr><td><svg class='ic'><use href='#i-cal'/></svg><b>Vacances de printemps zone C</b><br><span class='muted'>Familles</span></td><td>3 → 19 avr. 2027<br><span class='tbc ok'>officiel</span></td><td class='num'>450–662 €</td><td>Surveiller à J-45</td></tr><tr><td><svg class='ic'><use href='#i-star'/></svg><b>Ponts de mai</b><br><span class='muted'>Quatre longs week-ends</span></td><td>1er mai (sam.) · Ascension 6–9 mai · Pentecôte 15–17 mai<br><span class='tbc ok'>calendrier</span></td><td class='num'>387–1144 €</td><td>PriceLabs déjà à 900–1 144 € (3 nuits min sur l’Ascension) : rien à faire ; Pentecôte à 2 nuits, à passer à 3 à J-90</td></tr><tr><td><svg class='ic'><use href='#i-flag'/></svg><b>Triathlon Deauville Normandie</b><br><span class='muted'>Sportifs et familles</span></td><td>mi-juin 2027 (2026 : 19–21 juin) — à confirmer<br><span class='tbc warn'>estimé</span></td><td class='num'>888–905 €</td><td>Confirmer la date à la publication ; PriceLabs déjà ~900 €</td></tr><tr><td><svg class='ic'><use href='#i-sun'/></svg><b>Ventes Arqana d’août</b><br><span class='muted'>Acheteurs internationaux, 3–4 nuits</span></td><td>≈ 14 → 17 août 2027 (2025 : 16–18) — à confirmer<br><span class='tbc warn'>estimé</span></td><td class='num'>972–1444 €</td><td>PriceLabs déjà à 972–1 444 € ; vérifier le séjour min 4–5 (peut gêner les 3 nuits)</td></tr><tr><td><svg class='ic'><use href='#i-camera'/></svg><b>Festival du cinéma américain</b><br><span class='muted'>La pointe de l’année, CID à 6 min</span></td><td>début sept. 2027 (2026 : 4–13 sept.) — à confirmer<br><span class='tbc warn'>estimé</span></td><td class='num'>437–699 €</td><td>Recommandé : prix mini 650 € + 3 nuits dès publication des dates (non appliqué — décision 29/09) ; PriceLabs aujourd’hui 437–699 €</td></tr></tbody>
+    </table></div>
+  </div>
+
+  <div class="sec">
+    <div class="eyebrow">11 · Règles &amp; journal</div>
+    <h2><svg class="ic"><use href="#i-doc"/></svg>Séjours, plateformes, décisions</h2>
+    <div class="tblwrap"><table>
+      <thead><tr><th>Sujet</th><th>Réglage</th><th>Où</th><th>Statut</th></tr></thead>
+      <tbody>
+        <tr><td>Séjour minimum par défaut</td><td>2 nuits ; 3 du 23 au 26 déc. et du 30 déc. au 2 janv., sur les week-ends d'avril et l'Ascension ; 4–5 en juillet-août</td><td>PriceLabs</td><td><span class="tbc ok">en place</span></td></tr>
+        <tr><td>Nuits orphelines</td><td>Proposé : 1 nuit autorisée entre deux séjours, −15 %</td><td>Interface PriceLabs</td><td><span class="tbc todo">à confirmer</span></td></tr>
+        <tr><td>Remises longs séjours</td><td>Proposé : 7 nuits et + −8 % · 28 et + −20 % (ou aucune)</td><td>Interface PriceLabs (LOS)</td><td><span class="tbc todo">à confirmer</span></td></tr>
+        <tr><td>Remises et promotions natives</td><td>Toutes désactivées (hebdo/mensuel Airbnb, promotion nouvelle annonce, tarification intelligente, offres Booking)</td><td>Airbnb · Booking</td><td><span class="tbc todo">à vérifier</span></td></tr>
+        <tr><td>Frais de ménage</td><td>237 € TTC, refacturés au voyageur</td><td>Airbnb · Booking</td><td><span class="tbc ok">en place</span></td></tr>
+        <tr><td>Linge</td><td>Par voyageur et par séjour — montant à renseigner</td><td>Airbnb · Booking</td><td><span class="tbc todo">montant ?</span></td></tr>
+        <tr><td>Voyageurs</td><td>Capacité 10 ; tarif de base pour 8 ; supplément proposé 50 €/nuit/personne au-delà</td><td>Airbnb · Booking</td><td><span class="tbc todo">à confirmer</span></td></tr>
+        <tr><td>Annulation</td><td>Modérée</td><td>Airbnb · Booking</td><td><span class="tbc ok">décidé</span></td></tr>
+        <tr><td>Préavis de réservation</td><td>À définir (même jour jusqu'à quelle heure ?)</td><td>Airbnb · Booking</td><td><span class="tbc todo">à définir</span></td></tr>
+        <tr><td>Booking — plans tarifaires</td><td>PriceLabs alimente le plan de base ; plans dérivés à reprendre des autres annonces</td><td>Booking</td><td><span class="tbc todo">à définir</span></td></tr>
+        <tr><td>Caution</td><td>800 €</td><td>Contrat</td><td><span class="tbc ok">décidé</span></td></tr>
+      </tbody>
+    </table></div>
+    <ul class="src" style="margin-top:16px">
+      <li><b>29/09/2026</b> — Estimation v3 validée (102 / 149 / 180 nuits ; 380 / 470 / 600 €). Booking sans majoration. Caution 800 €. Capacité 10, base 8.</li>
+      <li><b>29/09/2026</b> — Réglages PriceLabs posés par Chahine (base 388 / plancher 300, saisonnalité et demande Moderately Aggressive, anticipation Aggressive). Recommandations non retenues : plafond 1 500 €, anticipation Balanced, surcharges festival / AMRAE / marathon / Toussaint, séjour min 3 en été.</li>
+      <li><b>29/09/2026</b> — Frais de ménage confirmés à 237 € TTC.</li>
+      <li><b>29/09/2026</b> — Posture de lancement retenue : <b>modéré + coup de pouce</b> (−10 % sur les week-ends du 9 oct. au 7 nov., retrait au 3<sup>e</sup> avis ou le 15 nov.). Échéancier de sept rendez-vous adopté.</li>
+    </ul>
+  </div>
+</section>
+</main>
+<footer class="foot"><div class="wrap"><div class="sig">EUKLEIA</div><div>Document interne — stratégie tarifaire L'Hermitage · v2 du 29 septembre 2026</div></div></footer>
+</body></html>
